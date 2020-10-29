@@ -1,14 +1,31 @@
 dependencies:
   build:
    - maven:3.5.4
-   - java:11.0.8
+   - java:8.252.09
 
 build_targets:
   - name: default
+    environment:
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - YB_DEBUG=true
+    commands:
+      - mvn clean package -Drat.numUnapprovedLicenses=100
+
+  - name: local
     container:
       image: yourbase/yb_ubuntu:18.04
+      mounts:
+        - /Users/jamesnaftel/dev/yourbase/yourbase-java-engine/buildgraph-agent/target/buildgraph-agent-1.0-ALPHA.jar:/yourbase-agent.jar
+    environment:
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - YB_DEBUG=true
+      - YB_BUILD_UUID=ch1
+      - YB_AGENT_JAR=/yourbase-agent.jar
     commands:
-      - mvn -B -Drat.numUnapprovedLicenses=100 install
+      - mvn clean package -Drat.numUnapprovedLicenses=100
+
 ci:
   builds:
     - name: default

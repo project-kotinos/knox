@@ -268,6 +268,13 @@
         <zookeeper.version>3.5.7</zookeeper.version>
     </properties>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>yourbase-release</id>
+            <url>http://yourbase-maven-repo.s3-website-us-west-2.amazonaws.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <profiles>
         <profile>
             <id>package</id>
@@ -440,6 +447,27 @@
                         <exclude>**/new-service-definition-template.xml</exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+              <plugin>
+                <groupId>io.yourbase</groupId>
+                <artifactId>yourbase-maven-plugin</artifactId>
+                <version>1.1.6-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>yb-init</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>yb-reporting</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
